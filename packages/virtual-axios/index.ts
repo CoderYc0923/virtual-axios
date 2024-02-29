@@ -1,10 +1,12 @@
-import { baseConfig } from "./type";
+import { BaseConfig } from "./type";
 
 
 class virtualAxios {
-  private request: any
-  constructor(axios: any, config: baseConfig) {
-    
+  private instance: any
+  private config: BaseConfig
+  constructor(axios: any, config: BaseConfig) {
+    this.instance = axios;
+    this.config = config
   }
 }
 

@@ -3,9 +3,9 @@ import axios from 'axios'
 
 // //创建一个axios实例
 
-// const service = axios.create({
-//     baseURL: ''
-// })
+const service = axios.create({
+    baseURL: ''
+})
 
 // //通过virtual-axios对service进行加工
 
