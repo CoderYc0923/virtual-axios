@@ -40,9 +40,11 @@ export interface Interceptor {
  */
 export interface RetryConfig {
     enable: boolean,
+    log?: boolean,
     coverAll?: boolean,
     scopePorts?: scopeArray,
-    retryCount?: number
+    retryCount?: number,
+    intervalTime?: number
 }
 
 /**
