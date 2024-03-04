@@ -5,12 +5,14 @@ class virtualAxios {
   private instance: any
   private config: BaseConfig
   private retryMap: Map<string, number>
+  private pendingMap: Map<string, any>
   private MAX_RETRY_COUNT: number = 5
   private INTERVAL_TIME: number = 1000
   constructor(axios: any, config: BaseConfig) {
     this.instance = axios;
     this.config = config;
     this.retryMap = new Map();
+    this.pendingMap = new Map();
   }
 
   //配置自定义拦截器
@@ -39,8 +41,17 @@ class virtualAxios {
   //工厂内部功能的拦截器
   setFactoryInterceptors() {
     this.instance.interceptor.request.use((config: any) => {
+      //重复请求相关
+      this.config.cancelRepeat?.enable && this.addPendingRequest(config)
+
+      return config
     }, (error: any) => { })
-    this.instance.interceptor.response.use((response: any) => { }, (error: any) => {
+    this.instance.interceptor.response.use((response: any) => {
+      //重复请求相关
+      this.config.cancelRepeat?.enable && this.removePendingRequest(response.config)
+
+      return response
+    }, (error: any) => {
       //重试相关
       return this.setRetry(error)
     })
@@ -76,7 +87,41 @@ class virtualAxios {
     if (!this.retryMap.has(url)) this.retryMap.set(url, 0);
   }
 
-  //重试
+  /**
+   * 配置取消重复请求
+   * 原理：取消请求B，发送请求A
+   * 维护一个pending队列，请求拦截add 相应拦截delete
+   * @param config
+   */
+  //添加到队列
+  addPendingRequest(config: any) {
+    if (this.config.cancelRepeat?.coverAll || this.config.cancelRepeat?.scopePorts?.includes(config.rul)) {
+      this.removePendingRequest(config)
+      const id = this.getUrlId(config)
+      const abortController = new AbortController()
+      config.signal = abortController.signal
+      if (!this.pendingMap.has(id)) {
+        this.pendingMap.set(id, abortController)
+      }
+    }
+  }
+
+  //从队列中删除
+  removePendingRequest(config: any) {
+    if (this.config.cancelRepeat?.coverAll || this.config.cancelRepeat?.scopePorts?.includes(config.rul)) {
+      const id = this.getUrlId(config)
+      if (this.pendingMap.has(id)) {
+        const abortController = this.pendingMap.get(id)
+        abortController?.abort()
+        this.pendingMap.delete(id)
+      }
+    }
+  }
+
+  //生成接口唯一id
+  getUrlId(config: any) {
+    return [config.url, config.method].join(':')
+  }
 }
 
 export { virtualAxios };
