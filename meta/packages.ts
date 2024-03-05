@@ -22,7 +22,7 @@ export const packages: any[] = [
   //   }
   // },
   {
-    name: "virtual-axios",
+    name: "axios-factory",
     display: "Vue3",
     external: [],
     moduleJs: true, // 是否 main 入口指向 index.mjs

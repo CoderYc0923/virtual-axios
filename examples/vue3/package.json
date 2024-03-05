@@ -12,7 +12,7 @@
   "dependencies": {
     "axios": "^1.6.7",
     "source-map-js": "^1.0.2",
-    "virtual-axios": "workspace:^",
+    "axios-factory": "workspace:^",
     "vue": "^3.2.47"
   },
   "devDependencies": {

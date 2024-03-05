@@ -21,10 +21,10 @@ const esbuildMinifer = (options: ESBuildOptions) => {
 for (const { globals, name, external, iife, build, cjs, mjs, dts, target } of packages) {
     if (build === false) continue
     const iifeGlobals = {
-        'virtual-axios': 'virtual-axios',
+        'axios-factory': 'axios-factory',
         ...(globals || {})
     }
-    const iifeName = 'virtual-axios'
+    const iifeName = 'axios-factory'
 
     //打包hooks和utils
     const fn = 'index'

@@ -51,7 +51,7 @@ async function buildMetaFiles() {
     )
     // 当子类包互相引用时，要手动更改其版本（不改的话则是 workspace）
     for (const key of Object.keys(packageJSON.dependencies || {})) {
-      if (key.startsWith('virtual-axios')) {
+      if (key.startsWith('axios-factory')) {
         packageJSON.dependencies[key] = version
       }
     }

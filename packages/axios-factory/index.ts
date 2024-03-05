@@ -2,7 +2,7 @@ import { BaseConfig, Interceptor } from "./type";
 import { mySetInterval } from "./tools";
 
 
-class virtualAxios {
+class AxiosFactory {
   private instance: any
   private config: BaseConfig
   private retryMap: Map<string, number>
@@ -28,6 +28,11 @@ class virtualAxios {
       this.setFactoryInterceptors()
       this.setCustomInterceptors()
     }
+  }
+
+  //返回改造后的实例
+  getvirtualAxios() {
+    return this.instance
   }
 
   //配置自定义拦截器
@@ -163,5 +168,5 @@ class virtualAxios {
 
 }
 
-export { virtualAxios };
-export default virtualAxios
+export { AxiosFactory };
+export default AxiosFactory

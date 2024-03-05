@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import service from './https/index'
+import request from './https/index'
 
 const sendRequest = (type: string) => {
   const typeMap: any = {
@@ -23,19 +23,19 @@ const sendRequest = (type: string) => {
 }
 
 const sendGet = async () => {
-  await service.get('/api/hello')
+  await request.get('/api/hello')
 }
 
 const sendPost = async () => {
-  await service.post('/api/data', {data: '111111'})
+  await request.post('/api/data', {data: '111111'})
 }
 
 const sendDelete = async () => {
-  await service.delete(`/api/data/:${11}`)
+  await request.delete(`/api/data/:${11}`)
 }
 
 const sendPut = async () => {
-  await service.put(`/api/data/:${22}`)
+  await request.put(`/api/data/:${22}`)
 }
 
 </script>

@@ -1,5 +1,5 @@
 {
-  "name": "virtual-axios",
+  "name": "axios-factory",
   "version": "0.1.0",
   "description": "axios加工工厂,丰富你的axios",
   "private": true,
