@@ -1,4 +1,9 @@
 /**
+ * 自定义拦截器执行顺序的类型
+ */
+type modes = 'pre' | 'after' 
+
+/**
  * 拦截器的类型
  */
 type types = 'request' | 'response' 
@@ -20,7 +25,8 @@ export interface BaseConfig {
     interceptors?: Interceptor[],
     retry?: RetryConfig,
     cancelRepeat?: CancelConfig,
-    pollings?: Polling[]
+    pollings?: Polling[],
+    customMode?: modes
 }
 
 

@@ -1,4 +1,5 @@
 import { BaseConfig, Interceptor } from "./type";
+import { mySetInterval } from "./tools";
 
 
 class virtualAxios {
@@ -6,13 +7,27 @@ class virtualAxios {
   private config: BaseConfig
   private retryMap: Map<string, number>
   private pendingMap: Map<string, any>
+  private pollingMap: Map<string, any>
   private MAX_RETRY_COUNT: number = 5
   private INTERVAL_TIME: number = 1000
+  private DEFAULT_MODE: string = 'pre'
+
   constructor(axios: any, config: BaseConfig) {
     this.instance = axios;
     this.config = config;
     this.retryMap = new Map();
     this.pendingMap = new Map();
+    this.pollingMap = new Map()
+    this.setPollingMap();
+
+    const mode = this.config?.customMode || this.DEFAULT_MODE
+    if (mode === 'pre') {
+      this.setCustomInterceptors()
+      this.setFactoryInterceptors()
+    } else {
+      this.setFactoryInterceptors()
+      this.setCustomInterceptors()
+    }
   }
 
   //配置自定义拦截器
@@ -49,7 +64,7 @@ class virtualAxios {
     this.instance.interceptor.response.use((response: any) => {
       //重复请求相关
       this.config.cancelRepeat?.enable && this.removePendingRequest(response.config)
-
+      this.setPolling(response.config)
       return response
     }, (error: any) => {
       //重试相关
@@ -122,6 +137,30 @@ class virtualAxios {
   getUrlId(config: any) {
     return [config.url, config.method].join(':')
   }
+
+  //配置轮询
+  setPolling(config: any) {
+    const pollingConfig = this.pollingMap.get(config.url)
+    if (pollingConfig && !pollingConfig.timer) {
+      let timer = mySetInterval(() => this.instance(config), pollingConfig.intervalTime)
+      this.pollingMap.set(pollingConfig.scopePort, {...pollingConfig, timer})
+    }
+  }
+
+  //初始化轮询Map
+  setPollingMap() {
+    const pollings = this.config.pollings || []
+    pollings.forEach(item => {
+      if (!this.pollingMap.has(item.scopePort)) {
+        let config = {
+          ...item,
+          timer: null
+        }
+        this.pollingMap.set(item.scopePort, config)
+      }
+    })
+  }
+
 }
 
 export { virtualAxios };
