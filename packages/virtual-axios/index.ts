@@ -164,3 +164,4 @@ class virtualAxios {
 }
 
 export { virtualAxios };
+export default virtualAxios
