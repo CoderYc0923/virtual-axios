@@ -11,35 +11,11 @@ export default defineConfig({
     port: 6658,
     cors: true,
     proxy: {
-      '/getList': {
-        target: 'http://localhost:3353/',
+      '/api': {
+        target: 'http://localhost:3001/',
         changeOrigin: false, //  target是域名的话，需要这个参数，
         secure: false //  设置支持https协议的代理,
       },
-      '/setList': {
-        target: 'http://localhost:3353/',
-        changeOrigin: false, //  target是域名的话，需要这个参数，
-        secure: false //  设置支持https协议的代理,
-      },
-      '/cleanTracingList': {
-        target: 'http://localhost:3353/',
-        changeOrigin: false,
-        secure: false
-      },
-      '/getBaseInfo': {
-        target: 'http://localhost:3353'
-      },
-      '/getAllTracingList': {
-        target: 'http://localhost:3353'
-      },
-      '/trackweb': {
-        target: 'http://localhost:3353'
-      },
-      '/getSourceMap': {
-        target: 'http://localhost:3353/',
-        changeOrigin: false, //  target是域名的话，需要这个参数，
-        secure: false //  设置支持https协议的代理,
-      }
     }
   },
   resolve: {
