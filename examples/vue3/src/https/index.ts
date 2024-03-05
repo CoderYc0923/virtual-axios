@@ -4,8 +4,15 @@ import axios from 'axios'
 // //创建一个axios实例
 
 const service = axios.create({
-    baseURL: ''
+    baseURL: 'http://localhost:3001',
+    headers: {
+        'Content-Type': 'application/json'
+    }
 })
+
+export default service
+
+
 
 // //通过virtual-axios对service进行加工
 

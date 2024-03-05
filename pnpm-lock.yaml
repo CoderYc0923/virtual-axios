@@ -92,6 +92,9 @@ importers:
       express:
         specifier: ^4.18.3
         version: 4.18.3
+      express-cors:
+        specifier: ^0.0.3
+        version: 0.0.3
       nodemon:
         specifier: ^3.1.0
         version: 3.1.0
@@ -1765,6 +1768,11 @@ packages:
   /etag@1.8.1:
     resolution: {integrity: sha512-aIL5Fx7mawVa300al2BnEE4iNvo1qETxLrPI/o05L7z6go7fCw1J6EQmbK4FmJ2AS7kgVF/KEZWufBfdClMcPg==}
     engines: {node: '>= 0.6'}
+    dev: false
+
+  /express-cors@0.0.3:
+    resolution: {integrity: sha512-niRr2FV60JnzthAq6fmVsnvIuu6H+SQF5GcoIDMz9z3EF+sT+aGiiyWgeAj8Qj6VIXyX0NmuZQIqqcaQFvKsEg==}
+    engines: {node: '>=0.5.2'}
     dev: false
 
   /express@4.18.3:
