@@ -46,7 +46,7 @@ class AxiosFactory {
 
   //拦截器生成函数
   generateInterceptor(interceptor: Interceptor) {
-    this.instance.interceptor[interceptor.type].use((config: any) => {
+    this.instance.interceptors[interceptor.type].use((config: any) => {
       const url = interceptor.type === 'request' ? config.url : config.config.url
       if (interceptor.coverAll) config.success(config)
       else if (interceptor.scopePorts?.includes(url)) config.success(config)
@@ -60,13 +60,13 @@ class AxiosFactory {
 
   //工厂内部功能的拦截器
   setFactoryInterceptors() {
-    this.instance.interceptor.request.use((config: any) => {
+    this.instance.interceptors.request.use((config: any) => {
       //重复请求相关
       this.config.cancelRepeat?.enable && this.addPendingRequest(config)
 
       return config
     }, (error: any) => { })
-    this.instance.interceptor.response.use((response: any) => {
+    this.instance.interceptors.response.use((response: any) => {
       //重复请求相关
       this.config.cancelRepeat?.enable && this.removePendingRequest(response.config)
       this.setPolling(response.config)

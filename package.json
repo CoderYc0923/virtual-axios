@@ -9,7 +9,8 @@
     "build:rollup": "cross-env NODE_OPTIONS=\"--max-old-space-size=6144\" rollup -c",
     "build:rollup-watch": "cross-env NODE_OPTIONS=\"--max-old-space-size=6144\" rollup -c -w",
     "publish": "esno scripts/publish.ts",
-    "test:vue3": "pnpm run -C examples/vue3 dev"
+    "test:vue3": "pnpm run -C examples/vue3 dev",
+    "test:server": "pnpm run -C examples/server start"
   },
   "keywords": [
     "axios",
