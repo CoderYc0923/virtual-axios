@@ -48,8 +48,8 @@ class AxiosFactory {
   generateInterceptor(interceptor: Interceptor) {
     this.instance.interceptors[interceptor.type].use((config: any) => {
       const url = interceptor.type === 'request' ? config.url : config.config.url
-      if (interceptor.coverAll) config.success(config)
-      else if (interceptor.scopePorts?.includes(url)) config.success(config)
+      if (interceptor.coverAll) interceptor.success(config)
+      else if (interceptor.scopePorts?.includes(url)) interceptor.success(config)
       return config
     }, (error: any) => {
       if (interceptor.coverAll) error.success(error)

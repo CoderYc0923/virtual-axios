@@ -1,43 +1,71 @@
 <template>
   <div id="app">
-    <h3 @click="sendRequest('get')">发送GET请求</h3>
-    <h3 @click="sendRequest('post')">发送POST请求</h3>
-    <h3 @click="sendRequest('delete')">发送DELETE请求</h3>
-    <h3 @click="sendRequest('put')">发送PUT请求</h3>
+    <ul>
+      <h5>接口列表：</h5>
+      <li>get: /api/hello</li>
+      <li>post: /api/data</li>
+      <li>delete: /api/data/:11</li>
+      <li>put: /api/data/:11</li>
+    </ul>
+    <h3>自定义拦截测试</h3>
+    <div class="btn-box">
+      <span @click="testCustomActions('all-request')">全部请求拦截</span>
+      <span @click="testCustomActions('scope-request')">部分请求拦截</span>
+      <span @click="testCustomActions('all-response')">全部响应拦截</span>
+      <span @click="testCustomActions('scope-response')">部分响应拦截</span>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import request from './https/index'
+import allRequest from './https/customFactory/allRequest'
 
-const sendRequest = (type: string) => {
+const testCustomActions = (type: string) => {
   const typeMap: any = {
-    get: sendGet,
-    post: sendPost,
-    delete: sendDelete,
-    put: sendPut
+    'all-request': useAllRequest,
+    'scope-request': useScopeRequest,
+    'all-response': useAllResponse,
+    'scope-response': useScopeResponse
   }
 
   typeMap[type]()
 }
 
-const sendGet = async () => {
-  await request.get('/api/hello')
+const useAllRequest = async () => {
+  await allRequest.get('/api/hello')
+  await allRequest.post('/api/data', { data: '111111' })
+  await allRequest.delete(`/api/data/:${11}`)
+  await allRequest.put(`/api/data/:${22}`)
 }
 
-const sendPost = async () => {
-  await request.post('/api/data', {data: '111111'})
+const useScopeRequest = async () => {
+  // await request.post('/api/data', { data: '111111' })
 }
 
-const sendDelete = async () => {
-  await request.delete(`/api/data/:${11}`)
+const useAllResponse = async () => {
+  // await request.delete(`/api/data/:${11}`)
 }
 
-const sendPut = async () => {
-  await request.put(`/api/data/:${22}`)
+const useScopeResponse = async () => {
+  // await request.put(`/api/data/:${22}`)
 }
 
 </script>
 
-<style scoped lang="scss"></style>
+<style>
+.btn-box {
+  display: flex;
+  align-items: center;
+}
+
+.btn-box span {
+  padding: 5px;
+  margin-right: 5px;
+  background-color: black;
+  color: #ffffff;
+  border-radius: 5px;
+  font-size: 12px;
+  cursor: pointer;
+}
+</style>
