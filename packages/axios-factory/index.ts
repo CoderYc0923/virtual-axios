@@ -1,4 +1,4 @@
-import { BaseConfig, Interceptor } from "./type";
+import { BaseConfig, Interceptor, scopeArray } from "./type";
 import { mySetInterval } from "./tools";
 
 
@@ -33,6 +33,47 @@ class AxiosFactory {
   //返回改造后的实例
   getvirtualAxios() {
     return this.instance
+  }
+
+  //接口匹配器
+  interfaceMatcher(interfaces: scopeArray, url: string, method: string) {
+    let isMatch = false
+    for (let item of interfaces) {
+      //默认全匹配
+      const mode = item.matchMode ? item.matchMode : 'perfect'
+
+      if (mode === 'perfect') {
+        if (item.method) {
+          const method1 = item.method.toLocaleLowerCase();
+          const method2 = method.toLocaleLowerCase();
+          if ((method1 + item.url) === (method2 + url)) {
+            isMatch = true;
+            break;
+          }
+        } else {
+          if (item.url === url) {
+            isMatch = true;
+            break;
+          }
+        }
+      } else if (mode === 'fuzzy') {
+        if (item.method) {
+          const method1 = item.method.toLocaleLowerCase();
+          const method2 = method.toLocaleLowerCase();
+          if ((method2 + url).includes((method1 + item.url))) {
+            isMatch = true;
+            break;
+          }
+        } else {
+          if (url.includes(item.url)) {
+            isMatch = true;
+            break;
+          }
+        }
+      }
+    }
+
+    return isMatch
   }
 
   //配置自定义拦截器
@@ -148,7 +189,7 @@ class AxiosFactory {
     const pollingConfig = this.pollingMap.get(config.url)
     if (pollingConfig && !pollingConfig.timer) {
       let timer = mySetInterval(() => this.instance(config), pollingConfig.intervalTime)
-      this.pollingMap.set(pollingConfig.scopePort, {...pollingConfig, timer})
+      this.pollingMap.set(pollingConfig.scopePort, { ...pollingConfig, timer })
     }
   }
 

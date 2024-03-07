@@ -1,12 +1,22 @@
 /**
- * 自定义拦截器执行顺序的类型
+ * 自定义拦截器执行顺序的类型：前置 | 后置
  */
 type modes = 'pre' | 'after' 
+
+/**
+ * 接口匹配的类型: 全 | 模糊
+ */
+type matchModes = 'perfect' | 'fuzzy' 
 
 /**
  * 拦截器的类型
  */
 type types = 'request' | 'response' 
+
+/**
+ * 请求类型
+ */
+type methods = 'get' | 'post' | 'put' | 'delete' | 'patch' | 'head' | 'options' 
 
 /**
  * 拦截器的回调
@@ -16,7 +26,16 @@ type callBack = (params: any) => any
 /**
  * 拦截器的作用接口数组
  */
-type scopeArray = string[]
+export type scopeArray = ScopeArrayItem[]
+
+/**
+ * 拦截器的作用接口数组项
+ */
+interface ScopeArrayItem {
+    method?: methods,
+    url: string,
+    matchMode?: matchModes
+}
 
 /**
  * 基础工厂参数

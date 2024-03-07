@@ -1,17 +1,5 @@
-<div align="center">
-  <h1>virtual-monitor 前端监控插件</h1>
-  <p>
-    基于 TS 跨平台监控插件，支持[行为、性能、异常、请求、资源、路由、曝光]监控
-  </p>
-</div>
 
-## virtual-monitor-examples-vue3
+## 问题总结
 
-[virtual-monitor](https://gitee.com/ye_chao111/virtual-monitor)的示例项目（vue3 版本）
+1. 目前对请求URL匹配存在问题 比如参数携带在url后面的： 暂时添加 全匹配和模糊匹配两种
 
-## 运行
-
-```
-pnpm install
-pnpm run start
-```
