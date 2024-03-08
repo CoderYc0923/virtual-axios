@@ -19,6 +19,8 @@ const config: BaseConfig = {
             type: 'request',
             coverAll: true,
             success: (config: any) => {
+                console.log('config',config);
+                
                 console.log(`接口调用成功:${config.method} - ${config.url} 被捕获`)
             },
             error: (error: any) => {

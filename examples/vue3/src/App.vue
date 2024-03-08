@@ -33,7 +33,7 @@ const testCustomActions = (type: string) => {
 }
 
 const useAllRequest = async () => {
-  await allRequest.get('/api/hello')
+  await allRequest.get('/api/hello?code=1111')
   await allRequest.post('/api/data', { data: '111111' })
   await allRequest.delete(`/api/data/:${11}`)
   await allRequest.put(`/api/data/:${22}`)

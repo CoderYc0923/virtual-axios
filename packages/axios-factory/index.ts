@@ -174,16 +174,26 @@ class AxiosFactory {
 
   //配置轮询
   setPolling(config: any) {
-    const pollingConfig = this.pollingMap.get(config.url)
+    const url = this.getPathName(config.url)
+    const pollingConfig = this.pollingMap.get(url)
     if (pollingConfig && !pollingConfig.timer) {
       let timer = mySetInterval(() => this.instance(config), pollingConfig.intervalTime)
       this.pollingMap.set(pollingConfig.scopePort, { ...pollingConfig, timer })
     }
   }
 
+  //获取接口路由（除参数）
+  getPathName(url: string) {
+    const exampleDomain = 'http://example.com'
+    const newUrl = new URL(url, exampleDomain)
+    return newUrl.pathname
+  }
+
   //初始化轮询Map
   setPollingMap() {
     const pollings = this.config.pollings || []
+    //轮询配置的接口暂不允许配置全匹配和模糊
+    //因考虑到轮询的接口一般为get，所以不把method考虑进去，而是根据url（除参数外）进行一个全匹配操作
     pollings.forEach(item => {
       if (!this.pollingMap.has(item.scopePort)) {
         let config = {

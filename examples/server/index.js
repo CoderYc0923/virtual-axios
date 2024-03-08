@@ -16,7 +16,7 @@ app.use((req, res, next) => {
 
 // GET 请求
 app.get('/api/hello', (req, res) => {
-    res.send('Hello World!');
+    res.send(`Hello World!id:${req.query.code}`);
 });
 
 // POST 请求
