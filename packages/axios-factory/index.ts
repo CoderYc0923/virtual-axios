@@ -69,8 +69,9 @@ class AxiosFactory {
   generateInterceptor(interceptor: Interceptor) {
     this.instance.interceptors[interceptor.type].use((config: any) => {
       const url = interceptor.type === 'request' ? config.url : config.config.url
+      const method = interceptor.type === 'request' ? config.method : config.config.method
       if (interceptor.coverAll) interceptor.success(config)
-      else if (interceptor.scopePorts?.includes(url)) interceptor.success(config)
+      else if (this.interfaceMatcher(interceptor?.scopePorts || [], url, method)) interceptor.success(config)
       return config
     }, (error: any) => {
       if (interceptor.coverAll) error.success(error)
@@ -101,12 +102,13 @@ class AxiosFactory {
   //配置重试
   setRetry(error: any) {
     const url = error.config.url
+    const method = error.config.method
     const maxRetryCount = this.config.retry?.retryCount || this.MAX_RETRY_COUNT
     const intervalTime = this.config.retry?.intervalTime || this.INTERVAL_TIME
 
     if (!this.config.retry?.coverAll) {
       let urls = this.config.retry?.scopePorts || []
-      if (!urls.includes(url)) return Promise.reject(error)
+      if (!this.interfaceMatcher(urls, url, method)) return Promise.reject(error)
     }
 
     this.setRetryMap(url)
@@ -136,7 +138,10 @@ class AxiosFactory {
    */
   //添加到队列
   addPendingRequest(config: any) {
-    if (this.config.cancelRepeat?.coverAll || this.config.cancelRepeat?.scopePorts?.includes(config.rul)) {
+    const url = config.url
+    const method = config.method
+    const urls = this.config.cancelRepeat?.scopePorts || []
+    if (this.config.cancelRepeat?.coverAll || this.interfaceMatcher(urls, url, method)) {
       this.removePendingRequest(config)
       const id = this.getUrlId(config)
       const abortController = new AbortController()
@@ -149,7 +154,10 @@ class AxiosFactory {
 
   //从队列中删除
   removePendingRequest(config: any) {
-    if (this.config.cancelRepeat?.coverAll || this.config.cancelRepeat?.scopePorts?.includes(config.rul)) {
+    const url = config.url
+    const method = config.method
+    const urls = this.config.cancelRepeat?.scopePorts || []
+    if (this.config.cancelRepeat?.coverAll || this.interfaceMatcher(urls, url, method)) {
       const id = this.getUrlId(config)
       if (this.pendingMap.has(id)) {
         const abortController = this.pendingMap.get(id)
