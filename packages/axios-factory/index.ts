@@ -37,43 +37,23 @@ class AxiosFactory {
 
   //接口匹配器
   interfaceMatcher(interfaces: scopeArray, url: string, method: string) {
-    let isMatch = false
     for (let item of interfaces) {
       //默认全匹配
-      const mode = item.matchMode ? item.matchMode : 'perfect'
+      const mode = item?.matchMode || 'perfect'
+      const method1 = (item?.method || '').toLocaleLowerCase();
+      const method2 = method.toLocaleLowerCase();
 
-      if (mode === 'perfect') {
-        if (item.method) {
-          const method1 = item.method.toLocaleLowerCase();
-          const method2 = method.toLocaleLowerCase();
-          if ((method1 + item.url) === (method2 + url)) {
-            isMatch = true;
-            break;
-          }
-        } else {
-          if (item.url === url) {
-            isMatch = true;
-            break;
-          }
+      if (item?.method) {
+        if (mode === 'perfect' ? (method1 + item.url) === (method2 + url) : item.url === url) {
+          return true
         }
-      } else if (mode === 'fuzzy') {
-        if (item.method) {
-          const method1 = item.method.toLocaleLowerCase();
-          const method2 = method.toLocaleLowerCase();
-          if ((method2 + url).includes((method1 + item.url))) {
-            isMatch = true;
-            break;
-          }
-        } else {
-          if (url.includes(item.url)) {
-            isMatch = true;
-            break;
-          }
+      } else {
+        if (mode === 'perfect' ? (method2 + url).includes((method1 + item.url)) : url.includes(item.url)) {
+          return true
         }
       }
     }
-
-    return isMatch
+    return false
   }
 
   //配置自定义拦截器
