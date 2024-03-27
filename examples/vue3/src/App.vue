@@ -35,6 +35,7 @@ const testCustomActions = (type: string) => {
   typeMap[type]();
 };
 
+//全部请求拦截
 const useAllRequest = async () => {
   await allRequest.get("/api/hello?code=1111");
   await allRequest.post("/api/data", { data: "111111" });
@@ -42,6 +43,7 @@ const useAllRequest = async () => {
   await allRequest.put(`/api/data/:${22}`);
 };
 
+//部分请求拦截
 const useScopeRequest = async () => {
   await scopeRequest.get("/api/hello?code=1111");
   await scopeRequest.post("/api/data", { data: "111111" });
@@ -49,6 +51,7 @@ const useScopeRequest = async () => {
   await scopeRequest.put(`/api/data/:${22}`);
 };
 
+//全部响应拦截
 const useAllResponse = async () => {
   await allResponse.get("/api/hello?code=1111");
   await allResponse.post("/api/data", { data: "111111" });
@@ -56,6 +59,7 @@ const useAllResponse = async () => {
   await allResponse.put(`/api/data/:${22}`);
 };
 
+//部分响应拦截
 const useScopeResponse = async () => {
   await scopeResponse.get("/api/hello?code=1111");
   await scopeResponse.post("/api/data", { data: "111111" });
