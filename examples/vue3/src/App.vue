@@ -19,42 +19,49 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import allRequest from './https/customFactory/allRequest'
-import scopeRequest from './https/customFactory/scopeRequest'
+import allRequest from "./https/customFactory/allRequest";
+import scopeRequest from "./https/customFactory/scopeRequest";
+import allResponse from "./https/customFactory/allResponse";
+import scopeResponse from "./https/customFactory/scopeResponse";
 
 const testCustomActions = (type: string) => {
   const typeMap: any = {
-    'all-request': useAllRequest,
-    'scope-request': useScopeRequest,
-    'all-response': useAllResponse,
-    'scope-response': useScopeResponse
-  }
+    "all-request": useAllRequest,
+    "scope-request": useScopeRequest,
+    "all-response": useAllResponse,
+    "scope-response": useScopeResponse,
+  };
 
-  typeMap[type]()
-}
+  typeMap[type]();
+};
 
 const useAllRequest = async () => {
-  await allRequest.get('/api/hello?code=1111')
-  await allRequest.post('/api/data', { data: '111111' })
-  await allRequest.delete(`/api/data/:${11}`)
-  await allRequest.put(`/api/data/:${22}`)
-}
+  await allRequest.get("/api/hello?code=1111");
+  await allRequest.post("/api/data", { data: "111111" });
+  await allRequest.delete(`/api/data/:${11}`);
+  await allRequest.put(`/api/data/:${22}`);
+};
 
 const useScopeRequest = async () => {
-  await scopeRequest.get('/api/hello?code=1111')
-  await scopeRequest.post('/api/data', { data: '111111' })
-  await scopeRequest.delete(`/api/data/:${11}`)
-  await scopeRequest.put(`/api/data/:${22}`)
-}
+  await scopeRequest.get("/api/hello?code=1111");
+  await scopeRequest.post("/api/data", { data: "111111" });
+  await scopeRequest.delete(`/api/data/:${11}`);
+  await scopeRequest.put(`/api/data/:${22}`);
+};
 
 const useAllResponse = async () => {
-  // await request.delete(`/api/data/:${11}`)
-}
+  await allResponse.get("/api/hello?code=1111");
+  await allResponse.post("/api/data", { data: "111111" });
+  await allResponse.delete(`/api/data/:${11}`);
+  await allResponse.put(`/api/data/:${22}`);
+};
 
 const useScopeResponse = async () => {
-  // await request.put(`/api/data/:${22}`)
-}
-
+  await scopeResponse.get("/api/hello?code=1111");
+  await scopeResponse.post("/api/data", { data: "111111" });
+  await scopeResponse.delete(`/api/data/:${11}`);
+  await scopeResponse.put(`/api/data/:${22}`);
+};
 </script>
 
 <style>
