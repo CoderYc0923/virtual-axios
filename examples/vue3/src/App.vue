@@ -20,6 +20,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import allRequest from './https/customFactory/allRequest'
+import scopeRequest from './https/customFactory/scopeRequest'
 
 const testCustomActions = (type: string) => {
   const typeMap: any = {
@@ -40,7 +41,10 @@ const useAllRequest = async () => {
 }
 
 const useScopeRequest = async () => {
-  // await request.post('/api/data', { data: '111111' })
+  await scopeRequest.get('/api/hello?code=1111')
+  await scopeRequest.post('/api/data', { data: '111111' })
+  await scopeRequest.delete(`/api/data/:${11}`)
+  await scopeRequest.put(`/api/data/:${22}`)
 }
 
 const useAllResponse = async () => {

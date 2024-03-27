@@ -35,20 +35,29 @@ class AxiosFactory {
     return this.instance
   }
 
-  //接口匹配器
+  /**
+   * 接口匹配器
+   * @param interfaces 自定义拦截器配置项
+   * @param method 当前拦截到的请求方法
+   * @param url 当前拦截到的url
+   * 
+   * @description 匹配规则：
+   * 1.method: 若表明method，则在method下的url进行匹配；若未表明，则所有方法下的url
+   * 2.matchMode: 若为'perfect',则对经过method处理的url进行全字符匹配;若为'fuzzy',则对经过method处理的url进行部分匹配
+   */
   interfaceMatcher(interfaces: scopeArray, url: string, method: string) {
     for (let item of interfaces) {
       //默认全匹配
       const mode = item?.matchMode || 'perfect'
-      const method1 = (item?.method || '').toLocaleLowerCase();
-      const method2 = method.toLocaleLowerCase();
+      const customMethod = (item?.method || '').toLocaleLowerCase();
+      const interceptMethod = method.toLocaleLowerCase();
 
       if (item?.method) {
-        if (mode === 'perfect' ? (method1 + item.url) === (method2 + url) : item.url === url) {
+        if (mode === 'perfect' ? (customMethod + item.url) === (interceptMethod + url) : (customMethod === interceptMethod && url.includes(item.url))) {
           return true
         }
       } else {
-        if (mode === 'perfect' ? (method2 + url).includes((method1 + item.url)) : url.includes(item.url)) {
+        if (mode === 'perfect' ? item.url === url : url.includes(item.url)) {
           return true
         }
       }
