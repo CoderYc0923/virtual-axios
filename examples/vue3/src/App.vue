@@ -14,15 +14,27 @@
       <span @click="testCustomActions('all-response')">全部响应拦截</span>
       <span @click="testCustomActions('scope-response')">部分响应拦截</span>
     </div>
+    <h3>工厂内部功能测试</h3>
+    <div class="btn-box">
+      <span @click="testInternalFunctions('cancel-repeat')">重复请求(低速3G下测试效果更佳)</span>
+      <span @click="testInternalFunctions('retry')">重试</span>
+      <span @click="testInternalFunctions('pollings')">轮询</span>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
+
+//自定义拦截
 import allRequest from "./https/customFactory/allRequest";
 import scopeRequest from "./https/customFactory/scopeRequest";
 import allResponse from "./https/customFactory/allResponse";
 import scopeResponse from "./https/customFactory/scopeResponse";
+
+//内部功能
+import cancelRepeat from "./https/internalFactory/cancelRepeat";
+
 
 const testCustomActions = (type: string) => {
   const typeMap: any = {
@@ -66,6 +78,43 @@ const useScopeResponse = async () => {
   await scopeResponse.delete(`/api/data/:${11}`);
   await scopeResponse.put(`/api/data/:${22}`);
 };
+
+const testInternalFunctions = (type: string) => {
+  const typeMap: any = {
+    "retry": useRetry,
+    "cancel-repeat": useCancelRepeat,
+    "pollings": usePollings,
+  };
+
+  typeMap[type]();
+};
+
+//重试
+const useRetry = async () => {
+
+}
+
+//重复请求
+const useCancelRepeat = async () => {
+  cancelRepeat.get("/api/hello?code=1111");
+  cancelRepeat.post("/api/data", { data: "111111" });
+  cancelRepeat.delete(`/api/data/:${11}`);
+  cancelRepeat.put(`/api/data/:${22}`);
+
+  cancelRepeat.get("/api/hello?code=1111");
+  cancelRepeat.post("/api/data", { data: "111111" });
+  cancelRepeat.delete(`/api/data/:${11}`);
+  cancelRepeat.put(`/api/data/:${22}`);
+
+  cancelRepeat.get("/api/hello?code=1111");
+  cancelRepeat.post("/api/data", { data: "111111" });
+  cancelRepeat.delete(`/api/data/:${11}`);
+  cancelRepeat.put(`/api/data/:${22}`);
+}
+
+//轮询
+const usePollings = async () => {}
+
 </script>
 
 <style>
