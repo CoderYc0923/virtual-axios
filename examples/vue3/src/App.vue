@@ -34,6 +34,7 @@ import scopeResponse from "./https/customFactory/scopeResponse";
 
 //内部功能
 import cancelRepeat from "./https/internalFactory/cancelRepeat";
+import retryAxios from "./https/internalFactory/retry";
 
 
 const testCustomActions = (type: string) => {
@@ -91,7 +92,7 @@ const testInternalFunctions = (type: string) => {
 
 //重试
 const useRetry = async () => {
-
+  retryAxios.get("/api/hello?code=1111");
 }
 
 //重复请求
