@@ -48,7 +48,7 @@ const testCustomActions = (type: string) => {
   typeMap[type]();
 };
 
-//全部请求拦截
+//全部请求拦截 test ok
 const useAllRequest = async () => {
   await allRequest.get("/api/hello?code=1111");
   await allRequest.post("/api/data", { data: "111111" });
@@ -56,7 +56,7 @@ const useAllRequest = async () => {
   await allRequest.put(`/api/data/:${22}`);
 };
 
-//部分请求拦截
+//部分请求拦截 test ok
 const useScopeRequest = async () => {
   await scopeRequest.get("/api/hello?code=1111");
   await scopeRequest.post("/api/data", { data: "111111" });
@@ -64,7 +64,7 @@ const useScopeRequest = async () => {
   await scopeRequest.put(`/api/data/:${22}`);
 };
 
-//全部响应拦截
+//全部响应拦截 test ok
 const useAllResponse = async () => {
   await allResponse.get("/api/hello?code=1111");
   await allResponse.post("/api/data", { data: "111111" });
@@ -72,7 +72,7 @@ const useAllResponse = async () => {
   await allResponse.put(`/api/data/:${22}`);
 };
 
-//部分响应拦截
+//部分响应拦截 test ok
 const useScopeResponse = async () => {
   await scopeResponse.get("/api/hello?code=1111");
   await scopeResponse.post("/api/data", { data: "111111" });
@@ -90,12 +90,15 @@ const testInternalFunctions = (type: string) => {
   typeMap[type]();
 };
 
-//重试
+//重试 test pedding
 const useRetry = async () => {
-  retryAxios.get("/api/hello?code=1111");
+  retryAxios.get("/api/hello/error");
+  //retryAxios.post("/api/data/error", { data: "111111" });
+  //retryAxios.delete(`/api/data/error/:${11}`);
+  //retryAxios.put(`/api/data/error/:${22}`);
 }
 
-//重复请求
+//重复请求 test ok
 const useCancelRepeat = async () => {
   cancelRepeat.get("/api/hello?code=1111");
   cancelRepeat.post("/api/data", { data: "111111" });

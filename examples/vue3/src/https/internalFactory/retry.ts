@@ -20,10 +20,12 @@ const config: BaseConfig = {
         // scopePorts: [
         //     {
         //         method: 'get',
-        //         url: '/api',
-        //         matchMode: 'fuzzy'
+        //         url: '/api/hello/error',
+        //         matchMode: 'perfect'
         //     },
         // ]
+        retryCount: 3,
+        intervalTime: 3000
     }
 }
 

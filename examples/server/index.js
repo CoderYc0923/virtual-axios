@@ -41,6 +41,35 @@ app.put('/api/data/:id', (req, res) => {
     res.json({ message: `Data with ID ${id} updated`, newData });
 });
 
+//错误请求
+// GET 请求
+let count = 0
+app.get('/api/hello/error', (req, res) => {
+    res.status(401).send(`get error`);
+});
+
+// POST 请求
+app.post('/api/data/error', (req, res) => {
+    const data = req.body;
+    // 处理 POST 请求的数据
+    res.status(404).json({ message: 'Data received error' });
+});
+
+// DELETE 请求
+app.delete('/api/data/error/:id', (req, res) => {
+    const id = req.params.id;
+    // 根据 id 删除数据
+    res.status(404).json({ message: `Data with ID ${id} Error` });
+});
+
+// PUT 请求
+app.put('/api/data/error/:id', (req, res) => {
+    const id = req.params.id;
+    const newData = req.body;
+    // 根据 id 更新数据
+    res.status(500).json({ message: `Data with ID ${id} updated error` });
+});
+
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 })
