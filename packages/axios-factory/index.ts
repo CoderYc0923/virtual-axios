@@ -9,7 +9,7 @@ class AxiosFactory {
   private pendingMap: Map<string, any>
   private pollingMap: Map<string, any>
   private MAX_RETRY_COUNT: number = 5
-  private INTERVAL_TIME: number = 1000
+  private INTERVAL_TIME: number = 3000
   private DEFAULT_MODE: string = 'pre'
 
   constructor(axios: any, config: BaseConfig) {
@@ -205,8 +205,10 @@ class AxiosFactory {
     //因考虑到轮询的接口一般为get，所以不把method考虑进去，而是根据url（除参数外）进行一个全匹配操作
     pollings.forEach(item => {
       if (!this.pollingMap.has(item.scopePort)) {
+        item.scopePort = this.getPathName(item.scopePort)
         let config = {
-          ...item,
+          scopePort: item.scopePort,
+          intervalTime: item?.intervalTime || this.INTERVAL_TIME,
           timer: null
         }
         this.pollingMap.set(item.scopePort, config)

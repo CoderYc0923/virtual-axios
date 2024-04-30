@@ -35,6 +35,7 @@ import scopeResponse from "./https/customFactory/scopeResponse";
 //内部功能
 import cancelRepeat from "./https/internalFactory/cancelRepeat";
 import retryAxios from "./https/internalFactory/retry";
+import pollingAxios from "./https/internalFactory/polling";
 
 
 const testCustomActions = (type: string) => {
@@ -116,8 +117,10 @@ const useCancelRepeat = async () => {
   cancelRepeat.put(`/api/data/:${22}`);
 }
 
-//轮询
-const usePollings = async () => {}
+//轮询 test ok
+const usePollings = async () => {
+  pollingAxios.get("/api/hello?code=1111");
+}
 
 </script>
 
