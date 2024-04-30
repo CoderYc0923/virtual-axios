@@ -90,7 +90,7 @@ const testInternalFunctions = (type: string) => {
   typeMap[type]();
 };
 
-//重试 test pedding
+//重试 test ok
 const useRetry = async () => {
   retryAxios.get("/api/hello/error");
   //retryAxios.post("/api/data/error", { data: "111111" });
